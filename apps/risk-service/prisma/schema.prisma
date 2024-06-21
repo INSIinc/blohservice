@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model RiskAssessment {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  risks     Risk?
+  updatedAt DateTime @updatedAt
+}
+
+model Risk {
+  assessmentId RiskAssessment? @relation(fields: [assessment], references: [id])
+  assessment   String?         @unique
+  createdAt    DateTime        @default(now())
+  id           String          @id @default(cuid())
+  updatedAt    DateTime        @updatedAt
+}
